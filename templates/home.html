@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method="post" action="{{ url_for('new_link') }}">
+        <label>
+            <input type="url" name="long_url" placeholder="Put long URL here" required>
+        </lable>
+        <input type="submit" value="Отправить">
+    </form>
+{% endblock %}
+
+{% block URL %}
+<div class="col-md-6 col-md-offset-3">
+    <a href="{{ url}}">{{ url}}</a>
+</div>
+{% endblock %}

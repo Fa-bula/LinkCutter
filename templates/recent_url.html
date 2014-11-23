@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{% endblock %}
+
+{% block URL %}
+{% for url in dic %}
+<div class="col-md-6 col-md-offset-3">
+    <a href="http://fabula.pythonanywhere.com/{{ url}}">http://fabula.pythonanywhere.com/{{ url}}</a>
+</div>
+{% endfor %}
+
+{% endblock %}
