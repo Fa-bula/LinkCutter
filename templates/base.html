@@ -1,13 +1,15 @@
 <head>
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <title>
+        Link Cutter
+    </title>
 </head>
 
 <body>
 <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-  <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <!-- Brand and toggle get grouped for better mobile display -->
+
+<div class="row">
+  <div class="col-md-3 col-md-offset-3">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">LinkCutter</a>
     </div>
@@ -16,10 +18,16 @@
       <ul class="nav navbar-nav">
         <li><a href="/recent">Short Links</a></li>
       </ul>
-    </div><!-- /.navbar-collapse -->
     </div>
     </div>
-  </div><!-- /.container-fluid -->
+
+  <div class="col-md-2 col-md-offset-4">
+    <form class="navbar-search pull-left" action="{{ url_for('login') }}">
+        <button class="btn btn-large" type="button">Large button</button>
+    </form>
+  </div>
+</div>
+
 </nav>
 
 <div class="container-fluid">
