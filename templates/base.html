@@ -22,9 +22,9 @@
     </div>
 
   <div class="col-md-2 col-md-offset-4">
-    <form class="navbar-search pull-left" action="{{ url_for('login') }}">
-        <button class="btn btn-large" type="button">Large button</button>
-    </form>
+        <form method="post" action="{{ url_for('login_page') }}">
+            <button type="submit" class="btn btn-info">Sign in</button>
+        </form>
   </div>
 </div>
 

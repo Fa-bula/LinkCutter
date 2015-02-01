@@ -66,6 +66,10 @@ def recent():
     dic = get_dict()
     return render_template('recent_url.html', dic=dic)
 
+@app.route("/login_page/", methods=["POST"])
+def login_page():
+    return render_template('login.html')
+
 @app.route("/login/", methods=["POST"])
 def login():
     login = request.form['login']
