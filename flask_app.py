@@ -1,5 +1,6 @@
 #!/usr/bin/python
-from flask import Flask, render_template, request, redirect, url_for
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request, redirect, url_for, make_response
 import itertools
 import hashlib
 import ast
@@ -35,15 +36,15 @@ app = Flask(__name__)
 
 @app.route("/link/<url>/")
 def home_with_url(url):
-    return render_template('home.html', url='http://fabula.pythonanywhere.com/' + url)
+    return render_template('home.html', url='http://fabula.pythonanywhere.com/' + url, login=request.cookies.get('login'))
 
 @app.route("/")
 def home():
-    return render_template('home.html', url='')
+    return render_template('home.html', url='', login=request.cookies.get('login'))
 
 @app.route("/<url>/")
 def redirect_to_url(url):
-    dic = get_dict(DIC_FILE)
+    DIC = GET_DICT(DIC_FILE)
     if (dic.get(url, 0)):
         return redirect(dic[url])
     else:
@@ -69,39 +70,48 @@ def new_link():
 @app.route("/recent/")
 def recent():
     dic = get_dict(DIC_FILE)
-    return render_template('recent_url.html', dic=dic)
+    return render_template('recent_url.html', dic=dic, login=request.cookies.get('login'))
 
 @app.route("/sign_in/", methods=["GET", "POST"])
 def sign_in():
     if request.method == "POST":
         login = request.form['login']
-        password = request.form['pass']
+        password = request.form['pass'].encode('utf-8')
         users = get_dict(USERS_FILE)
         hash = hashlib.sha224(password).hexdigest()
         if users.get(login, None) == hash:
-            return "OK"
+            resp = make_response(render_template('sign_in.html', msg='correct', login=login))
+            resp.set_cookie('login', login)
+            return resp
         else:
-            return "Invalid pass"
+            return render_template('sign_in.html', msg='incorrect')
 
     else:
-        return render_template('sign_in.html')
+        return render_template('sign_in.html', login=request.cookies.get('login'))
 
 @app.route('/sign_up/', methods=['GET', 'POST'])
 def sign_up():
     users = get_dict(DIC_FILE)
     if request.method == "POST":
         login = request.form['login']
-        password = request.form['pass']
-        conf_pass = request.form['conf_pass']
+        password = request.form['pass'].encode('utf-8')
+        conf_pass = request.form['conf_pass'].encode('utf-8')
         if password != conf_pass:
             return 'Passwords are different'
         if users.get(login, None) != None:
             return 'This login is occupied'
         users[login] = hashlib.sha224(password).hexdigest()
         set_dict(USERS_FILE, users)
-        return redirect(url_for('home'))
+        return redirect(url_for('sign_in'))
     else:
-        return render_template('sign_up.html')
+        return render_template('sign_up.html', login=request.cookies.get('login'))
+
+@app.route('/sign_out/', methods=['GET', 'POST'])
+def sign_out():
+    resp = make_response(redirect(url_for('home')))
+    resp.set_cookie('login', '')
+    return resp
     
+
 if __name__ == "__main__":
     app.run(debug=True)
