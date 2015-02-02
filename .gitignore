@@ -1,3 +1,4 @@
-static/users
-static/dic
+static/recent
+static/logins
 static/cur_data
+static/user_links/*

@@ -21,7 +21,7 @@
    
       <ul class="nav navbar-nav navbar-right">
 	{% if login %}
-        <li><a href='#'>Hello, {{login}}</a></li>
+        <li><a href={{url_for('my_links')}}>Hello, {{login}}</a></li>
         <li><a href={{url_for('sign_out')}}>Sign out</a></li>
 	{% else %}
 	<li><a href={{url_for('sign_in')}}>Sign in</a></li>
